@@ -1,0 +1,20 @@
+<div>
+	<div>
+		Upload data file for a Company
+	</div>
+	<div>
+		<%= form_tag({action: :create}, multipart: true) do %>
+		  
+		  <div>
+		  	<%= label_tag(:company_name, "Company Name") %>
+  			<%= text_field_tag 'company_name', nil, placeholder: "Type the Name of Company", size: 50 %>
+		  </div>
+		  <div>
+		  	<%= file_field_tag 'orders' %>
+		  </div>
+		  <div>
+		  	<%= submit_tag "Upload File" %>
+		  </div>
+		<% end %>
+	</div>
+</div>

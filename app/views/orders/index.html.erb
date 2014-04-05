@@ -1,0 +1,36 @@
+<div class="orders">
+	
+	<% Company.all.each do |company| %>
+	<div>
+		Orders List for Company: <%= company.name %>
+	</div>
+	<div>
+		<% if company.orders.blank? %>
+			No Orders Found
+		<% end %>
+	</div>
+	<% company.orders.each do |order| %>
+		<div>
+			Order uploaded at <%= order.created_at.to_formatted_s(:long) %> UTC, Gross Revenue: <%= number_to_currency(order.gross_revenue) %>
+		</div>
+		
+		<div class="orders_list">
+			<table>
+				<th>
+					<tr>Purchaser Name</tr>
+					<tr>Item Description</tr>
+					<tr>Item Price</tr>
+				</th>
+				<% order.line_items.each do |order| %>
+					<tr>
+						<td><%= order.purchaser_name %></td>
+						<td><%= order.item_description %></td>
+						<td><%= number_to_currency(order.item_price) %></td>
+					</tr>
+				<% end %>
+			</table>
+		</div>
+		<% end %>
+	<% end %>
+
+</div>

@@ -2,6 +2,8 @@
 # order details. It also creates an order with line items for a company
 class OrdersController < ApplicationController
 
+	before_action :authenticate_user!
+	
 	# Sets the list companies in an instance variable 
 	def index
 		@companies = Company.all

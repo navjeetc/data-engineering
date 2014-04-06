@@ -7,6 +7,8 @@ gem 'rails', '4.0.4'
 gem 'sqlite3'
 
 gem 'therubyracer'
+gem 'devise'
+
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 

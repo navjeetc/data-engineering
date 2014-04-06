@@ -32,6 +32,7 @@ class FileReader
 		return orders
 	end
 
+	# Extracts line items from order row
 	def extract_order_line(row, index)
 		if index == 0
 				#header row
@@ -44,6 +45,7 @@ class FileReader
 			p order 
 		end
 	end
+
 	# parses order data and returns the order
 	def parse_order(data)
 		order = Custom::Order.new

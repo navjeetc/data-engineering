@@ -1,36 +1,55 @@
-<div class="orders">
-	
-	<% Company.all.each do |company| %>
-	<div>
-		Orders List for Company: <%= company.name %>
-	</div>
+<%- model_class = Order -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<div>
+	<% if flash[:notice] %>
+		<p class="notice"><%= flash[:notice] %></p>
+	<% end %>
+</div>
+<div>
+	<%= link_to "Upload Order",
+            orders_upload_path,
+            :class => 'btn btn-primary' %>
+</div>
+<% @companies.each do |company| %>
+	<h3>
+		Orders for Company <%= company.name %>
+	</h3>
 	<div>
 		<% if company.orders.blank? %>
-			No Orders Found
+			No orders found.
 		<% end %>
 	</div>
 	<% company.orders.each do |order| %>
-		<div>
-			Order uploaded at <%= order.created_at.to_formatted_s(:long) %> UTC, Gross Revenue: <%= number_to_currency(order.gross_revenue) %>
+		<div class="upload_time">
+			Order uploaded at <%= order.created_at.to_formatted_s(:rfc822)  %> UTC
 		</div>
-		
-		<div class="orders_list">
-			<table>
-				<th>
-					<tr>Purchaser Name</tr>
-					<tr>Item Description</tr>
-					<tr>Item Price</tr>
-				</th>
-				<% order.line_items.each do |order| %>
-					<tr>
-						<td><%= order.purchaser_name %></td>
-						<td><%= order.item_description %></td>
-						<td><%= number_to_currency(order.item_price) %></td>
-					</tr>
-				<% end %>
-			</table>
+		<div class="gross_revenue">
+			Gross Revenue: <span class="revenue_amount"><%= number_to_currency(order.gross_revenue) %></span>
 		</div>
-		<% end %>
+		<table class="table table-striped">
+		  <thead>
+		    <tr>
+		      <th><%= model_class.human_attribute_name(:purchaser_name) %></th>
+		      <th><%= model_class.human_attribute_name(:item_description) %></th>
+		      <th><%= model_class.human_attribute_name(:item_price) %></th>
+		      <th><%= model_class.human_attribute_name(:purchase_count) %></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <% order.line_items.each do |li| %>
+		      <tr>
+		        <td><%= li.purchaser_name %></td>
+		        <td><%= li.item_description %></td>
+		        <td><%= number_to_currency(li.item_price) %></td>
+		        <td><%= li.purchase_count %></td>
+		      </tr>
+		    <% end %>
+		  </tbody>
+		</table>
 	<% end %>
-
-</div>
+<% end %>
+<%= link_to "Upload Order",
+            orders_upload_path,
+            :class => 'btn btn-primary' %>

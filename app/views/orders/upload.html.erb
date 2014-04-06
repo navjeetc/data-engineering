@@ -1,19 +1,29 @@
 <div>
+	<legend>
+		Upload Order data file for a Company
+	</legend>
 	<div>
-		Upload data file for a Company
+		<% @company.errors.full_messages.each do |msg| %>
+      <p class="text-error"><%= msg %></p>
+    <% end %>
 	</div>
 	<div>
-		<%= form_tag({action: :create}, multipart: true) do %>
+		<% if flash[:error] %>
+			<p class="text-error"><%= flash[:error] %></p>
+		<% end %>
+	</div>
+	<div>
+		<%= form_for(@company, url: orders_create_path, multipart: true, :html => { :class => 'form-horizontal' }) do |f| %>
 		  
-		  <div>
-		  	<%= label_tag(:company_name, "Company Name") %>
-  			<%= text_field_tag 'company_name', nil, placeholder: "Type the Name of Company", size: 50 %>
+		  <div class="control-group">
+		  	<%= f.label :name, "Company Name" %>
+  			<%= f.text_field :name, placeholder: "Type the Name of Company", size: 50 %>
 		  </div>
 		  <div>
-		  	<%= file_field_tag 'orders' %>
+		  	<%= f.file_field 'orders', :class => 'btn'  %>
 		  </div>
-		  <div>
-		  	<%= submit_tag "Upload File" %>
+		  <div class="form-actions">
+		  	<%= submit_tag "Upload File", :class => 'btn btn-primary'  %>
 		  </div>
 		<% end %>
 	</div>

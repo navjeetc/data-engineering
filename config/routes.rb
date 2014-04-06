@@ -3,9 +3,8 @@ Challenge::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'orders#menu'
+  root 'orders#upload'
 
-  get 'orders/menu' => 'orders#menu'
   get 'orders/index' => 'orders#index'
   get 'orders/upload' => 'orders#upload'
   post 'orders/create' => 'orders#create'

@@ -12,6 +12,11 @@
             orders_upload_path,
             :class => 'btn btn-primary' %>
 </div>
+<div>
+	<% if @companies.blank? %>
+		No Companies found.
+	<% end %>
+</div>
 <% @companies.each do |company| %>
 	<h3>
 		Orders for Company <%= company.name %>
@@ -28,26 +33,30 @@
 		<div class="gross_revenue">
 			Gross Revenue: <span class="revenue_amount"><%= number_to_currency(order.gross_revenue) %></span>
 		</div>
-		<table class="table table-striped">
-		  <thead>
-		    <tr>
-		      <th><%= model_class.human_attribute_name(:purchaser_name) %></th>
-		      <th><%= model_class.human_attribute_name(:item_description) %></th>
-		      <th><%= model_class.human_attribute_name(:item_price) %></th>
-		      <th><%= model_class.human_attribute_name(:purchase_count) %></th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    <% order.line_items.each do |li| %>
-		      <tr>
-		        <td><%= li.purchaser_name %></td>
-		        <td><%= li.item_description %></td>
-		        <td><%= number_to_currency(li.item_price) %></td>
-		        <td><%= li.purchase_count %></td>
-		      </tr>
-		    <% end %>
-		  </tbody>
-		</table>
+		<div>
+			<%= link_to "Show Details", "#", :class => "show_details_link" %>
+			<table class="table table-striped line_items" style="display:none">
+			  <thead>
+			    <tr>
+			      <th><%= model_class.human_attribute_name(:purchaser_name) %></th>
+			      <th><%= model_class.human_attribute_name(:item_description) %></th>
+			      <th><%= model_class.human_attribute_name(:item_price) %></th>
+			      <th><%= model_class.human_attribute_name(:purchase_count) %></th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <% order.line_items.each do |li| %>
+			      <tr>
+			        <td><%= li.purchaser_name %></td>
+			        <td><%= li.item_description %></td>
+			        <td><%= number_to_currency(li.item_price) %></td>
+			        <td><%= li.purchase_count %></td>
+			      </tr>
+			    <% end %>
+			  </tbody>
+			</table>
+		</div>	
+		<hr>
 	<% end %>
 <% end %>
 <%= link_to "Upload Order",

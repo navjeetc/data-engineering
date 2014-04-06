@@ -21,7 +21,7 @@
 			No orders found.
 		<% end %>
 	</div>
-	<% company.orders.each do |order| %>
+	<% company.orders.recent.each do |order| %>
 		<div class="upload_time">
 			Order uploaded at <%= order.created_at.to_formatted_s(:rfc822)  %> UTC
 		</div>

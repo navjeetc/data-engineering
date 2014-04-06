@@ -1,4 +1,4 @@
-require 'file_reader'
+require 'order_processor'
 
 # This class represents the orders uploaded for a company
 # An order can have many line items
@@ -6,11 +6,14 @@ class Order < ActiveRecord::Base
 	belongs_to 	:company
 	has_many 		:line_items, dependent: :destroy
 
-	# Parses the order data from the <i>orders_data</i> file passed in
-	def parse_orders(orders_data)
+	scope :recent, :order => "created_at  DESC"
+
+	# Extracts the line items from the <i>orders_data</i> file passed in
+	# and saves them
+	def extract_line_items(orders_data)
 		#TODO rename FileReader class as it does more than read
 		# more like OrderProcessor
-		order_processor = FileReader.new(orders_data)
+		order_processor = OrderProcessor.new(orders_data)
 		line_items = order_processor.read_data
 		db_orders = []
 		line_items.each do |line_item|

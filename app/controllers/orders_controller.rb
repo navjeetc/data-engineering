@@ -25,7 +25,7 @@ class OrdersController < ApplicationController
 			if orders_file_data.present?
 				#TODO In future do this asynchronously
 				order = Order.create
-				order.parse_orders(orders_file_data)
+				order.extract_line_items(orders_file_data)
 				@company.orders << order
 				@company.save
 

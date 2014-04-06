@@ -6,7 +6,7 @@ require 'order'
 # of orders
 #
 # Author::    Navjeet Chabbewal  (mailto:navjeetc@gmail.com)
-class FileReader
+class OrderProcessor
 
 	# initialized data file path
 	def initialize(file_path=nil)
@@ -65,5 +65,5 @@ class FileReader
 	end
 end
 
-#reader = FileReader.new("./example_input.tab")
+#reader = OrderProcessor.new("./example_input.tab")
 #reader.read_data

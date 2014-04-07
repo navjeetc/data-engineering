@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
 	belongs_to 	:company
 	has_many 		:line_items, dependent: :destroy
 
-	scope :recent, :order => "created_at  DESC"
+	scope :recent, -> { order("created_at  DESC") }
 
 	# Extracts the line items from the <i>orders_data</i> file passed in
 	# and saves them
@@ -15,14 +15,18 @@ class Order < ActiveRecord::Base
 		# more like OrderProcessor
 		order_processor = OrderProcessor.new(orders_data)
 		line_items = order_processor.read_data
-		db_orders = []
+		add_line_items(line_items)
+		self.save
+	end
+
+	# adds line items to order 
+	def add_line_items(line_items)
 		line_items.each do |line_item|
 			self.line_items  << LineItem.new(purchaser_name: line_item.purchaser_name,
 				item_description: line_item.item_description,
 				item_price: line_item.item_price,
 				purchase_count: line_item.purchase_count)
 		end
-		self.save
 	end
 
 	# Returns the gross revenue for the order

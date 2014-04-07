@@ -73,9 +73,11 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-gross_revenue">#gross_revenue</a>
+    <li ><a href="#method-i-add_line_items">#add_line_items</a>
     
-    <li ><a href="#method-i-parse_orders">#parse_orders</a>
+    <li ><a href="#method-i-extract_line_items">#extract_line_items</a>
+    
+    <li ><a href="#method-i-gross_revenue">#gross_revenue</a>
     
   </ul>
 </div>
@@ -114,6 +116,83 @@ many line items</p>
        </header>
 
     
+      <div id="method-i-add_line_items" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_line_items</span><span
+            class="method-args">(line_items)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>adds line items to order</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_line_items-source">
+            <pre><span class="ruby-comment"># File app/models/order.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_line_items</span>(<span class="ruby-identifier">line_items</span>)
+        <span class="ruby-identifier">line_items</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line_item</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">self</span>.<span class="ruby-identifier">line_items</span>  <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">LineItem</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">purchaser_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">purchaser_name</span>,
+                        <span class="ruby-identifier">item_description</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">item_description</span>,
+                        <span class="ruby-identifier">item_price</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">item_price</span>,
+                        <span class="ruby-identifier">purchase_count</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">purchase_count</span>)
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_line_items" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_line_items</span><span
+            class="method-args">(orders_data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts the line items from the <em>orders_data</em> file passed in and
+saves them</p>
+          
+          
+
+          
+          <div class="method-source-code" id="extract_line_items-source">
+            <pre><span class="ruby-comment"># File app/models/order.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_line_items</span>(<span class="ruby-identifier">orders_data</span>)
+        <span class="ruby-comment">#TODO rename FileReader class as it does more than read</span>
+        <span class="ruby-comment"># more like OrderProcessor</span>
+        <span class="ruby-identifier">order_processor</span> = <span class="ruby-constant">OrderProcessor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">orders_data</span>)
+        <span class="ruby-identifier">line_items</span> = <span class="ruby-identifier">order_processor</span>.<span class="ruby-identifier">read_data</span>
+        <span class="ruby-identifier">add_line_items</span>(<span class="ruby-identifier">line_items</span>)
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-gross_revenue" class="method-detail ">
         
         <div class="method-heading">
@@ -133,53 +212,9 @@ many line items</p>
 
           
           <div class="method-source-code" id="gross_revenue-source">
-            <pre><span class="ruby-comment"># File app/models/order.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/models/order.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gross_revenue</span>
         <span class="ruby-keyword">self</span>.<span class="ruby-identifier">line_items</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">li</span><span class="ruby-operator">|</span> <span class="ruby-identifier">li</span>.<span class="ruby-identifier">item_price</span><span class="ruby-operator">*</span><span class="ruby-identifier">li</span>.<span class="ruby-identifier">purchase_count</span>}.<span class="ruby-identifier">sum</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-parse_orders" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">parse_orders</span><span
-            class="method-args">(orders_data)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Parses the order data from the <em>orders_data</em> file passed in</p>
-          
-          
-
-          
-          <div class="method-source-code" id="parse_orders-source">
-            <pre><span class="ruby-comment"># File app/models/order.rb, line 10</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_orders</span>(<span class="ruby-identifier">orders_data</span>)
-        <span class="ruby-comment">#TODO rename FileReader class as it does more than read</span>
-        <span class="ruby-comment"># more like OrderProcessor</span>
-        <span class="ruby-identifier">order_processor</span> = <span class="ruby-constant">FileReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">orders_data</span>)
-        <span class="ruby-identifier">line_items</span> = <span class="ruby-identifier">order_processor</span>.<span class="ruby-identifier">read_data</span>
-        <span class="ruby-identifier">db_orders</span> = []
-        <span class="ruby-identifier">line_items</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line_item</span><span class="ruby-operator">|</span>
-                <span class="ruby-keyword">self</span>.<span class="ruby-identifier">line_items</span>  <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">LineItem</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">purchaser_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">purchaser_name</span>,
-                        <span class="ruby-identifier">item_description</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">item_description</span>,
-                        <span class="ruby-identifier">item_price</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">item_price</span>,
-                        <span class="ruby-identifier">purchase_count</span><span class="ruby-operator">:</span> <span class="ruby-identifier">line_item</span>.<span class="ruby-identifier">purchase_count</span>)
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

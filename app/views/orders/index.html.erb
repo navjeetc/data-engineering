@@ -3,11 +3,6 @@
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
 <div>
-	<% if flash[:notice] %>
-		<p class="notice"><%= flash[:notice] %></p>
-	<% end %>
-</div>
-<div>
 	<%= link_to "Upload Order",
             orders_upload_path,
             :class => 'btn btn-primary' %>

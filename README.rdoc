@@ -3,7 +3,7 @@
  
 This application is recommended to be used with
 
-* Ruby version 2.1.0
+* Ruby version 2.1.0 (or greater)
 
 * Rails version 4.0.4
 
@@ -17,3 +17,5 @@ This application is recommended to be used with
 
   * Run "rails s" to run the web application
 
+==TODO
+More specs need to be written

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class FileReader - Rails Application Documentation</title>
+<title>class OrderProcessor - Rails Application Documentation</title>
 
 <link href="./fonts.css" rel="stylesheet">
 <link href="./rdoc.css" rel="stylesheet">
@@ -89,9 +89,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-FileReader">
-  <h1 id="class-FileReader" class="class">
-    class FileReader
+<main role="main" aria-labelledby="class-OrderProcessor">
+  <h1 id="class-OrderProcessor" class="class">
+    class OrderProcessor
   </h1>
 
   <section class="description">
@@ -144,7 +144,7 @@ href="mailto:navjeetc@gmail.com">navjeetc@gmail.com</a>)</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/file_reader.rb, line 12</span>
+            <pre><span class="ruby-comment"># File lib/order_processor.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">file_path</span>=<span class="ruby-keyword">nil</span>)
         <span class="ruby-ivar">@data_file</span> = <span class="ruby-identifier">file_path</span>
 <span class="ruby-keyword">end</span></pre>
@@ -185,7 +185,7 @@ href="mailto:navjeetc@gmail.com">navjeetc@gmail.com</a>)</p>
 
           
           <div class="method-source-code" id="extract_order_line-source">
-            <pre><span class="ruby-comment"># File lib/file_reader.rb, line 36</span>
+            <pre><span class="ruby-comment"># File lib/order_processor.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_order_line</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">index</span>)
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">index</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
                         <span class="ruby-comment">#header row</span>
@@ -227,7 +227,7 @@ href="mailto:navjeetc@gmail.com">navjeetc@gmail.com</a>)</p>
 
           
           <div class="method-source-code" id="parse_columns-source">
-            <pre><span class="ruby-comment"># File lib/file_reader.rb, line 59</span>
+            <pre><span class="ruby-comment"># File lib/order_processor.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_columns</span>(<span class="ruby-identifier">row_data</span>)
         <span class="ruby-identifier">columns</span> = {}
         <span class="ruby-identifier">row_data</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\t&quot;</span>).<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column_name</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
@@ -264,12 +264,14 @@ href="mailto:navjeetc@gmail.com">navjeetc@gmail.com</a>)</p>
 
           
           <div class="method-source-code" id="parse_order-source">
-            <pre><span class="ruby-comment"># File lib/file_reader.rb, line 50</span>
+            <pre><span class="ruby-comment"># File lib/order_processor.rb, line 50</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_order</span>(<span class="ruby-identifier">data</span>)
         <span class="ruby-identifier">order</span> = <span class="ruby-constant">Custom</span><span class="ruby-operator">::</span><span class="ruby-constant">Order</span>.<span class="ruby-identifier">new</span>
         <span class="ruby-ivar">@columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column_name</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
                 <span class="ruby-identifier">setter_method_name</span> = <span class="ruby-identifier">column_name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">tr</span>(<span class="ruby-string">&#39; &#39;</span>,<span class="ruby-string">&#39;_&#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;=&quot;</span>
-                <span class="ruby-identifier">order</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">setter_method_name</span>.<span class="ruby-identifier">to_sym</span>, <span class="ruby-identifier">data</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">strip</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">order</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">setter_method_name</span>.<span class="ruby-identifier">to_sym</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">order</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">setter_method_name</span>.<span class="ruby-identifier">to_sym</span>) <span class="ruby-keyword">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">data</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-identifier">order</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">setter_method_name</span>.<span class="ruby-identifier">to_sym</span>, <span class="ruby-identifier">data</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">strip</span> 
+                <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">order</span>
 <span class="ruby-keyword">end</span></pre>
@@ -302,7 +304,7 @@ href="mailto:navjeetc@gmail.com">navjeetc@gmail.com</a>)</p>
 
           
           <div class="method-source-code" id="read_data-source">
-            <pre><span class="ruby-comment"># File lib/file_reader.rb, line 17</span>
+            <pre><span class="ruby-comment"># File lib/order_processor.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">read_data</span>
         <span class="ruby-identifier">index</span> = <span class="ruby-value">0</span>
         <span class="ruby-identifier">orders</span> = []

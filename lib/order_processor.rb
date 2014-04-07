@@ -51,7 +51,9 @@ class OrderProcessor
 		order = Custom::Order.new
 		@columns.each do |column_name, index|
 			setter_method_name = column_name.downcase.tr(' ','_') + "="
-			order.send setter_method_name.to_sym, data[index].strip if order.respond_to?(setter_method_name.to_sym)
+			if order.respond_to?(setter_method_name.to_sym) and !data[index].nil?
+				order.send setter_method_name.to_sym, data[index].strip 
+			end
 		end
 		return order
 	end
